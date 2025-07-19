@@ -99,4 +99,6 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 echo "[*] Запуск Docker Compose для GitLab CE..."
 docker compose up -d
 
-echo "[✔] Установка завершена. Перейдите в папку gitlab-ce-preparation-via-docker и запустите Docker Compose.
+echo "[✔] Установка завершена. Проверьте доступность GitLab по адресу http://gitlab.panov.local"
+echo "[*] Для доступа к GitLab используйте SSH-порт 2424 и HTTP-порт 80."
+echo "[*] Публичный SSH-ключ для доступа к GitLab
