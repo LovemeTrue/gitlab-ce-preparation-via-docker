@@ -11,4 +11,3 @@ To deploy pre requirements and GitLab CE via Docker-compose:
 chmod -x ./gitlab-docker-deploy.sh
 ./gitlab-docker-deploy.sh
 ```
-# gitlab-ce-preparation-via-docker
