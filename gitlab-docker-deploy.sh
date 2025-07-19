@@ -102,12 +102,10 @@ git clone https://github.com/LovemeTrue/gitlab-ce-preparation-via-docker.git
 cd gitlab-ce-preparation-via-docker
 
 # -------------------------------
-# 8. Запуск GitLab CE через docker compose
-# -------------------------------
-echo "[*] Запуск GitLab CE через Docker Compose..."
-docker compose up -d
-
-# -------------------------------
 # 9. Проверка
 # -------------------------------
-echo "[✔] Установка завершена. Доступ к GitLab: http://gitlab.panov.local"
+echo "[✔] Установка завершена. Перейдите в папку gitlab-ce-preparation-via-docker и запустите Docker Compose.
+
+
+echo "[*] Запуск Docker Compose..."
+sudo docker-compose up -d
