@@ -1,11 +1,9 @@
 ## This repository contains a script for preparing a GitLab CE environment via Docker-compose.
 
-## Requirements:
-1. Checking for the presence of Docker and Docker-compose.
-2. Checking for the presence of the necessary files.
-3. Checking network settings and port availability.
-4. Checking ssh keys
-5. Installin' GitLab CE.
+## What the script does:
+1. Checking for the presence of Docker and Docker-compose and installing them if necessary.2. Settings up network ufw settings and port availability.
+3. Checking ssh keys and createsating them if necessary.
+4. Installin' GitLab CE.
 
 ## Repo structure:
 ```
