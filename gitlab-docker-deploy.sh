@@ -93,19 +93,11 @@ echo \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
+cd gitlab-ce-preparation-via-docker || exit 1
 # -------------------------------
-# 7. Клонирование репозитория с Docker-установкой GitLab
-# -------------------------------
-echo "[*] Клонируем GitHub репозиторий..."
-cd ~
-git clone https://github.com/LovemeTrue/gitlab-ce-preparation-via-docker.git
-cd gitlab-ce-preparation-via-docker
+# 7. Запуск Docker Compose
 
-# -------------------------------
-# 9. Проверка
-# -------------------------------
+echo "[*] Запуск Docker Compose для GitLab CE..."
+docker compose up -d
+
 echo "[✔] Установка завершена. Перейдите в папку gitlab-ce-preparation-via-docker и запустите Docker Compose.
-
-
-echo "[*] Запуск Docker Compose..."
-sudo docker-compose up -d
