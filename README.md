@@ -20,6 +20,7 @@ git clone https://github.com/LovemeTrue/gitlab-ce-preparation-via-docker.git
 ```
 ## And launch the sh script:
 ```
+cd gitlab-ce-preparation-via-docker
 chmod -x ./gitlab-docker-deploy.sh
 ./gitlab-docker-deploy.sh
 ```
