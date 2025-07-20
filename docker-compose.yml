@@ -15,6 +15,9 @@ services:
         prometheus['listen_address'] = '0.0.0.0:9090'
         nginx['listen_port'] = 80
         puma['worker_processes'] = 0 # disable Puma worker to avoid memory leak
+      
+      GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: r3g1str4t10n
+
     ports:
       - "8088:80"       # GitLab Web UI
       - "2424:22"      # GitLab SSH
@@ -28,13 +31,23 @@ services:
   # GitLab Runner
   gitlab-runner:
     image: gitlab/gitlab-runner:latest
-    depends_on:
-      - gitlab
+    container_name: gitlab-runner
+    entrypoint: [""]
+    command: ["/bin/sh", "-c", "gitlab-runner register \
+                                      --non-interactive \
+                                      --url 'http://gitlab.panov.local' \
+                                      --registration-token 'r3g1str4t10n' \ 
+                                      --executor 'docker' \
+                                      --docker-network-mode 'host' \
+                                      --docker-image 'python:alpine' \
+            && gitlab-runner run --user=gitlab-runner --working-directory=/etc/gitlab-runner"]
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock   
       - ./config:/etc/gitlab-runner
-    networks:
-      - internal-net
+    network_mode: 'host'
+    depends_on:
+      gitlab:
+        condition: service_healthy
 
   # Flask приложение (порт 5000)
   flask-app:
