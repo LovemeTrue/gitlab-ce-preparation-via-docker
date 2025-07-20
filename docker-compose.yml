@@ -41,6 +41,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock   
       - ./config:/etc/gitlab-runner
     network_mode: 'host'
+    extra_hosts:
+      - "gitlab.panov.local:host-gateway"
     depends_on:
       gitlab:
         condition: service_healthy
