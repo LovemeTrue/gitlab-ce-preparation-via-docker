@@ -25,8 +25,6 @@ services:
       - ./srv/gitlab/config:/etc/gitlab
       - ./srv/gitlab/logs:/var/log/gitlab
       - ./srv/gitlab/data:/var/opt/gitlab
-    networks:
-      - internal-net
 
   # GitLab Runner
   gitlab-runner:
@@ -57,8 +55,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:5000"    # Доступно на http://localhost:5000
-    networks:
-      - internal-net
     depends_on:
       - gitlab
 
@@ -70,11 +66,5 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"    # Доступно на http://localhost:8080
-    networks:
-      - internal-net
     depends_on:
       - gitlab
-
-networks:
-  internal-net:
-    driver: bridge
