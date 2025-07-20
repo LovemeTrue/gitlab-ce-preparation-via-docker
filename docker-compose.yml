@@ -4,7 +4,6 @@ services:
     image: gitlab/gitlab-ce:nightly
     container_name: gitlab
     environment:
-      GITLAB_ROOT_EMAIL: "legkodogatca@gmail.com"
       GITLAB_ROOT_PASSWORD: "lazypeon"
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://gitlab.panov.local'
@@ -32,7 +31,7 @@ services:
     entrypoint: [""]
     command: ["/bin/sh", "-c", "gitlab-runner register \
                                       --non-interactive \
-                                      --url 'http://gitlab.panov.local' \
+                                      --url 'http://localhost:8088' \
                                       --registration-token 'r3g1str4t10n' \ 
                                       --executor 'docker' \
                                       --docker-network-mode 'host' \
