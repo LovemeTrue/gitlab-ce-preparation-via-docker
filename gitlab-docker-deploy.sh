@@ -20,13 +20,14 @@ echo "[*] Включаем SSH и UFW"
 sudo apt-get install -y ufw openssh-server
 sudo systemctl enable --now ssh
 
-sudo ufw allow 22/tcp
-sudo ufw allow 2424/tcp
+sudo ufw allow 22/tcp # будет занят дефолтным ssh
+sudo ufw allow 2424/tcp # для GitLab SSH
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw allow 5000/tcp # для Python Flask приложений
 sudo ufw allow 8080/tcp # для Java веб-приложений
 sudo ufw allow 9090/tcp # для Prometheus
+sudo ufw allow 5001/tcp # для Docker Registry
 sudo ufw --force enable
 
 # -------------------------------
