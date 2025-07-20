@@ -1,7 +1,7 @@
 services:
   # GitLab CE (основной сервер)
   gitlab:
-    image: gitlab/gitlab-ce:latest
+    image: gitlab/gitlab-ce:nightly
     container_name: gitlab
     environment:
       GITLAB_OMNIBUS_CONFIG: |
@@ -11,14 +11,14 @@ services:
       - "8088:80"       # GitLab Web UI
       - "2424:22"       # GitLab SSH
     volumes:
-      - gitlab_config:/etc/gitlab
-      - gitlab_logs:/var/log/gitlab
-      - gitlab_data:/var/opt/gitlab
+      - ./srv/gitlab/config:/etc/gitlab
+      - ./srv/gitlab/logs:/var/log/gitlab
+      - ./srv/gitlab/data:/var/opt/gitlab
     networks:
       - internal-net
 
   # GitLab Runner
-  runner:
+  gitlab-runner:
     image: gitlab/gitlab-runner:latest
     depends_on:
       - gitlab
