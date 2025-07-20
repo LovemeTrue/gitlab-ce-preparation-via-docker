@@ -4,12 +4,20 @@ services:
     image: gitlab/gitlab-ce:nightly
     container_name: gitlab
     environment:
+      environment:
+      GITLAB_ROOT_EMAIL: "legkodogatca@gmail.com"
+      GITLAB_ROOT_PASSWORD: "lazypeon"
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://gitlab.panov.local'
         gitlab_rails['gitlab_shell_ssh_port'] = 2424
+        gitlab_rails['initial_root_password'] = 'lazypeon'
+        prometheus['enable'] = true # Enable Prometheus monitoring
+        prometheus['listen_address'] = '0.0.0.0:9090'
+        nginx['listen_port'] = 80
+        puma['worker_processes'] = 0 # disable Puma worker to avoid memory leak
     ports:
       - "8088:80"       # GitLab Web UI
-      - "2424:22"       # GitLab SSH
+      - "2424:22"      # GitLab SSH
     volumes:
       - ./srv/gitlab/config:/etc/gitlab
       - ./srv/gitlab/logs:/var/log/gitlab
@@ -24,7 +32,7 @@ services:
       - gitlab
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - runner_config:/etc/gitlab-runner
+      - ./config:/etc/gitlab-runner
     networks:
       - internal-net
 
