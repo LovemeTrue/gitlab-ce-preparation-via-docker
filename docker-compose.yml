@@ -23,7 +23,7 @@ services:
     ports:
       - '8000:8000'
       - '2424:20'
-    
+
     healthcheck:
       test: curl --fail http://localhost:8000/users/sign_in || exit 1
       interval: 60s
@@ -46,5 +46,5 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock   
     network_mode: 'host'
     depends_on:
-      gitlab-server: 
+      gitlab:
         condition: service_healthy
