@@ -46,25 +46,3 @@ services:
     depends_on:
       gitlab:
         condition: service_healthy
-
-  # Flask приложение (порт 5000)
-  flask-app:
-    image: python:3.12-slim
-    build:
-      context: ./flask-app
-      dockerfile: Dockerfile
-    ports:
-      - "5000:5000"    # Доступно на http://localhost:5000
-    depends_on:
-      - gitlab
-
-  # Java приложение (порт 8080)
-  java-app:
-    image: arm64v8/openjdk:25-oraclelinux8
-    build:
-      context: ./java-app
-      dockerfile: Dockerfile
-    ports:
-      - "8080:8080"    # Доступно на http://localhost:8080
-    depends_on:
-      - gitlab
