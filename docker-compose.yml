@@ -23,24 +23,45 @@ services:
       - ./gitlab/logs:/var/log/gitlab
       - ./gitlab/data:/var/opt/gitlab
     networks:
-      - gitlab-network
+      - internal-net
 
+  # GitLab Runner
   runner:
     image: gitlab/gitlab-runner:latest
-    container_name: gitlab-runner
-    restart: always
     depends_on:
       - gitlab
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./runner/config:/etc/gitlab-runner
-    environment:
-      - CI_SERVER_URL=http://gitlab:8088
+      - runner_config:/etc/gitlab-runner
     networks:
-      - gitlab-network
-    extra_hosts:
-      - "gitlab.panov.local:${GITLAB_IP}"  # Установите переменную GITLAB_IP=ваш_IP_ВМ
+      - internal-net
+
+  # Flask приложение (порт 5000)
+  flask-app:
+    image: python:3.12-slim
+    build:
+      context: ./flask-app
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"    # Доступно на http://localhost:5000
+    networks:
+      - internal-net
+    depends_on:
+      - gitlab
+
+  # Java приложение (порт 8080)
+  # java-app:
+  #   image: your-java-image:latest
+  #   build:
+  #     context: ./java-app
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:8080"    # Доступно на http://localhost:8080
+  #   networks:
+  #     - internal-net
+  #   depends_on:
+  #     - gitlab
 
 networks:
-  gitlab-network:
+  internal-net:
     driver: bridge
