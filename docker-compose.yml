@@ -1,50 +1,59 @@
 services:
+  # GitLab CE (основной сервер)
   gitlab:
-    image: gitlab/gitlab-ce:nightly
-    container_name: gitlab-server
-    restart: always
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
     environment:
-      GITLAB_ROOT_EMAIL: "legkodogatca@gmail.com"
-      GITLAB_ROOT_PASSWORD: "lazypeon"
       GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://localhost:8088'
+        external_url 'http://gitlab.panov.local'
         gitlab_rails['gitlab_shell_ssh_port'] = 2424
-        gitlab_rails['initial_root_password'] = 'lazypeon'
-        prometheus['enable'] = true # Enable Prometheus monitoring
-        prometheus['listen_address'] = '0.0.0.0:9090'
-        nginx['listen_port'] = 80
-        puma['worker_processes'] = 0 # disable Puma worker to avoid memory leak
-      
-      GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: r3g1str4t10n
-    volumes:
-      - ./gitlab/config:/etc/gitlab
-      - ./gitlab/logs:/var/log/gitlab
-      - ./gitlab/data:/var/opt/gitlab
     ports:
-      - '8000:8000'
-      - '2424:20'
-
-    healthcheck:
-      test: curl --fail http://localhost:8000/users/sign_in || exit 1
-      interval: 60s
-      timeout: 3s
-      retries: 5
-
-  gitlab-runner:
-    image: gitlab/gitlab-runner:latest
-    container_name: gitlab-runner
-    entrypoint: [""]
-    command: ["/bin/sh", "-c", "gitlab-runner register \
-                                      --non-interactive \
-                                      --url 'http://localhost:8000' \
-                                      --registration-token 'r3g1str4t10n' \ 
-                                      --executor 'docker' \
-                                      --docker-network-mode 'host' \
-                                      --docker-image 'python:alpine' \
-            && gitlab-runner run --user=gitlab-runner --working-directory=/etc/gitlab-runner"]
+      - "8088:80"       # GitLab Web UI
+      - "2424:22"       # GitLab SSH
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock   
-    network_mode: 'host'
+      - gitlab_config:/etc/gitlab
+      - gitlab_logs:/var/log/gitlab
+      - gitlab_data:/var/opt/gitlab
+    networks:
+      - internal-net
+
+  # GitLab Runner
+  runner:
+    image: gitlab/gitlab-runner:latest
     depends_on:
-      gitlab:
-        condition: service_healthy
+      - gitlab
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - runner_config:/etc/gitlab-runner
+    networks:
+      - internal-net
+
+  # Flask приложение (порт 5000)
+  flask-app:
+    image: python:3.12-slim
+    build:
+      context: ./flask-app
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"    # Доступно на http://localhost:5000
+    networks:
+      - internal-net
+    depends_on:
+      - gitlab
+
+  # Java приложение (порт 8080)
+  java-app:
+    image: java:17-slim
+    build:
+      context: ./java-app
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"    # Доступно на http://localhost:8080
+    networks:
+      - internal-net
+    depends_on:
+      - gitlab
+
+networks:
+  internal-net:
+    driver: bridge
