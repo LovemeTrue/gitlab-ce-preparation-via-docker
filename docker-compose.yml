@@ -51,7 +51,7 @@ services:
 
   # Java приложение (порт 8080)
   java-app:
-    image: java:17-slim
+    image: arm64v8/openjdk:25-oraclelinux8
     build:
       context: ./java-app
       dockerfile: Dockerfile
