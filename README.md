@@ -1,7 +1,7 @@
-## This repository contains a script for preparing a GitLab CE environment via Docker-compose.
+## This repository will guide you to virtualize `Debian 12.iso` on MacOS M1 by UTM and set up a `GitLab CE` environment and services via Docker-compose.
 
 ## What the script does:
-1. Checking for the presence of Docker and Docker-compose and installing them if necessary.
+1. Checking for the presence of Docker, Docker-compose and other apts and installing them if necessary.
 2. Settings up network ufw settings and port availability.
 3. Checking ssh keys and createsating them if necessary.
 4. Installin' GitLab CE, Gitlab-Runner, Prometheus, caDvisor via Docker composer.
