@@ -26,18 +26,16 @@ git clone https://github.com/LovemeTrue/gitlab-ce-preparation-via-docker.git
 cd gitlab-ce-preparation-via-docker
 chmod -R 777 ./gitlab-docker-deploy.sh
 ./gitlab-docker-deploy.sh
-
-
 ```
-## To deploy Gitlab-CE, Gitlab-Runner, Prometheus, caDvisor via Docker composer use compose command:
+## To deploy services:
 ```
 docker compose up -d
 ```
-## To stop Gitlab-CE, Gitlab-Runner, Prometheus, caDvisor via Docker composer use compose command:
+## To stop services: 
 ```
 docker compose down
 ```
-## To restart Gitlab-CE, Gitlab-Runner, Prometheus, caDvisor via Docker composer use compose command:
+## To restart services:
 ```
 docker compose restart
 ```
