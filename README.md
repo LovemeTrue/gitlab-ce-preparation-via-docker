@@ -11,8 +11,9 @@
 gitlab-ce-preparation-via-docker/
 ├── .env                      # Environment variables
 |── docker-compose.yml
-├── pre-requisites-deploy.sh
+├── gitlab-ce-services-deploy.sh
 ├── prometheus.yml
+├── README_FIRST.md
 └── README.md
 
 ```
