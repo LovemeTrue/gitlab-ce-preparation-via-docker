@@ -17,7 +17,6 @@ gitlab-ce-preparation-via-docker/
 └── README.md
 
 ```
-
 ## To deploy pre requirements and GitLab CE via Docker-compose clone repo:
 ```
 git clone https://github.com/LovemeTrue/gitlab-ce-via-docker-compose.git
@@ -25,8 +24,8 @@ git clone https://github.com/LovemeTrue/gitlab-ce-via-docker-compose.git
 ## And launch the sh script:
 ```
 cd gitlab-ce-via-docker-compose
-chmod -R 777 ./gitlab-docker-deploy.sh
-./gitlab-docker-deploy.sh
+chmod -R 777 ./gitlab-ce-services-deploy.sh
+./gitlab-ce-services-deploy.sh
 ```
 ## To deploy services:
 ```
