@@ -20,13 +20,14 @@ echo "[*] Включаем SSH и UFW"
 sudo apt-get install -y ufw openssh-server
 sudo systemctl enable --now ssh
 
-sudo ufw allow 22/tcp # будет занят дефолтным ssh
+sudo ufw allow 20/tcp ## для ssh
+sudo ufw allow 22/tcp ## для ssh
 sudo ufw allow 2424/tcp # для GitLab SSH
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
+sudo ufw allow 80/tcp # для GitLab server
 sudo ufw allow 5000/tcp # для Python Flask приложений
 sudo ufw allow 8080/tcp # для Java веб-приложений
 sudo ufw allow 9090/tcp # для Prometheus
+sudo ufw allow 8081/tcp # для cAdvisor
 sudo ufw allow 5001/tcp # для Docker Registry
 sudo ufw --force enable
 
@@ -43,41 +44,14 @@ else
 fi
 
 # -------------------------------
-# 4. Обновление /etc/hosts
+# 4. Установка утилит
 # -------------------------------
-echo "[*] Обновляем /etc/hosts..."
-
-INTERFACE=$(ip -o -4 addr show | awk '{print $2}' | grep -v 'lo' | while read -r iface; do
-    if ip -4 addr show "$iface" | grep -q 'inet 192\.168'; then
-        echo "$iface"
-        break
-    fi
-done)
-
-if [ -n "$INTERFACE" ]; then
-    IP_ADDR=$(ip -4 -o addr show dev "$INTERFACE" | awk '{print $4}' | cut -d'/' -f1 | head -n1)
-    if [ -n "$IP_ADDR" ]; then
-        sudo sed -i '/gitlab\.panov\.local$/d' /etc/hosts
-        echo "$IP_ADDR gitlab.panov.local" | sudo tee -a /etc/hosts > /dev/null
-        echo "[+] Добавлена запись: $IP_ADDR gitlab.panov.local"
-    else
-        echo "[!] Не удалось определить IP-адрес"
-        exit 1
-    fi
-else
-    echo "[!] Не найден подходящий интерфейс с IP 192.168.*"
-    exit 1
-fi
-
-# -------------------------------
-# 5. Установка утилит
-# -------------------------------
-echo "[*] Установка утилит"
+echo "[*] Установка необходимых утилит"
 sudo apt-get install -y \
-  bash-completion curl etckeeper git jq ssh tmux strace vim net-tools sudo openjdk-17-jre
+  bash-completion curl etckeeper jq ssh tmux strace vim net-tools sudo openjdk-17-jre openssh-server 
 
 # -------------------------------
-# 6. Установка Docker
+# 5. Установка Docker
 # -------------------------------
 echo "[*] Установка Docker CE..."
 
@@ -95,11 +69,10 @@ echo \
 sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 # -------------------------------
-# 7. Запуск Docker Compose
-
+# 6. Запуск Docker Compose
+sleep 15
 echo "[*] Запуск Docker Compose для GitLab CE..."
 docker compose up -d
 
-echo "[✔] Установка завершена. Проверьте доступность GitLab по адресу http://gitlab.panov.local"
-echo "[*] Для доступа к GitLab используйте SSH-порт 2424 и HTTP-порт 80."
-echo "[*] Публичный SSH-ключ для доступа к GitLab
+echo "[✔] Установка завершена. Проверьте доступность GitLab по адресу http://localhost:8080 или http://gitlab.panov.local:8080"
+echo "[✔] Для входа в GitLab используйте: root/lazypeon"

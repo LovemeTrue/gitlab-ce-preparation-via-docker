@@ -10,8 +10,8 @@ services:
         gitlab_rails['gitlab_shell_ssh_port'] = 2424
         gitlab_rails['initial_root_password'] = 'lazypeon'
         prometheus['enable'] = true # Enable Prometheus monitoring
-        prometheus['listen_address'] = '0.0.0.0:9090'
-        nginx['listen_port'] = 80
+        prometheus['listen_address'] = '0.0.0.0:9090' # Listen on all interfaces
+        nginx['listen_port'] = 80 # Use port 80 for GitLab web UI
         puma['worker_processes'] = 0 # disable Puma worker to avoid memory leak
       
       GITLAB_SHARED_RUNNERS_REGISTRATION_TOKEN: r3g1str4t10n
@@ -24,7 +24,8 @@ services:
       - ./srv/gitlab/logs:/var/log/gitlab
       - ./srv/gitlab/data:/var/opt/gitlab
 
-  # GitLab Runner
+  # GitLab Runner which auto registrating itself to GitLab
+  # and become ready to run CI/CD pipelines for projects
   gitlab-runner:
     image: gitlab/gitlab-runner:latest
     container_name: gitlab-runner
@@ -48,35 +49,38 @@ services:
       gitlab:
         condition: service_healthy
   
-  # Создание локального Docker Registry для будущего деплоя образов by GitLab CI/CD
+  # Creating local registry to deploy apps by GitLab CI/CD
   registry:
     image: registry:2
     container_name: registry
     ports:
-      - "5001:5000"  # Внешний порт 5001, внутренний 5000 (стандартный порт Docker Registry)
+      - "5001:5000"  # Outier 5001, inner 5000 (deafult Docker Registry port)
     restart: always
     volumes:
-      - ./registry:/var/lib/registry  # Хранилище образов (persistent)
+      - ./registry:/var/lib/registry  # Image storage(persistent)
   
-  # CAdvisor для мониторинга контейнеров
+  # CAdvisor for monitoring Docker containers
+  # It collects metrics about running containers and provides a web UI.
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.2
     container_name: cadvisor
     ports:
-      - "8081:8080"
+      - "8081:8080" # Outier 8081, inner 8080 (deafult cAdvisor port)
     volumes:
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
+      - /:/rootfs:ro # Root filesystem
+      - /var/run:/var/run:ro # Docker runtime
+      - /sys:/sys:ro # System files
       - /var/lib/docker/:/var/lib/docker:ro
     restart: always
 
-  # Prometheus для сбора метрик
+  # Prometheus for monitoring GitLab and other services
+  # It collects metrics from GitLab and cAdvisor
+  # and provides a web UI for viewing metrics.
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     ports:
-      - "9090:9090"
+      - "9090:9090" # Outier 9090, inner 9090 (deafult Prometheus port)
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # Prometheus configuration file
     restart: always
