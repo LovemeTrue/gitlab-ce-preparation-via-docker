@@ -46,3 +46,13 @@ services:
     depends_on:
       gitlab:
         condition: service_healthy
+  
+  # Создание локального Docker Registry для будущего деплоя образов by GitLab CI/CD
+  registry:
+    image: registry:2
+    container_name: registry
+    ports:
+      - "5001:5000"  # Внешний порт 5001, внутренний 5000 (стандартный порт Docker Registry)
+    restart: always
+    volumes:
+      - ./registry:/var/lib/registry  # Хранилище образов (persistent)
