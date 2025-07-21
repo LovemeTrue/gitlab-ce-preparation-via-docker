@@ -18,7 +18,7 @@ sudo apt-get update
 # -------------------------------
 echo "[*] Включаем SSH и UFW"
 sudo apt-get install -y ufw openssh-server
-sudo systemctl enable --now ssh
+sudo systemctl enable --now ssh # включаем autostart SSH
 
 sudo ufw allow 20/tcp ## для ssh
 sudo ufw allow 22/tcp ## для ssh
