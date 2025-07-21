@@ -35,6 +35,7 @@ services:
                                       --registration-token 'r3g1str4t10n' \ 
                                       --executor 'docker' \
                                       --docker-network-mode 'host' \
+                                      --docker-volumes '/var/run/docker.sock:/var/run/docker.sock' \
                                       --docker-image 'docker:latest' \
             && gitlab-runner run --user=gitlab-runner --working-directory=/etc/gitlab-runner"]
     volumes:
