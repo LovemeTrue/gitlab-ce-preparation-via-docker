@@ -1,0 +1,30 @@
+
+
+root@debian:/home/debian/java-app/java-app# docker inspect --format='{{json .State.Health}}' flask-app | jq
+{
+  "Status": "healthy",
+  "FailingStreak": 0,
+  "Log": [
+    {
+      "Start": "2025-07-21T03:59:33.251394844-07:00",
+      "End": "2025-07-21T03:59:33.435931042-07:00",
+      "ExitCode": 0,
+      "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    25  100    25    0     0   2533      0 --:--:-- --:--:-- --:--:--  2777\nHello World from Python!!"
+    }
+  ]
+}
+
+
+root@debian:/home/debian/java-app/java-app# docker inspect --format='{{json .State.Health}}' java-app | jq
+{
+  "Status": "healthy",
+  "FailingStreak": 0,
+  "Log": [
+    {
+      "Start": "2025-07-21T04:08:34.348698376-07:00",
+      "End": "2025-07-21T04:08:34.451750345-07:00",
+      "ExitCode": 0,
+      "Output": "  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\r  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\r100    22  100    22    0     0    583      0 --:--:-- --:--:-- --:--:--   594\nHello World from Java!"
+    }
+  ]
+}
