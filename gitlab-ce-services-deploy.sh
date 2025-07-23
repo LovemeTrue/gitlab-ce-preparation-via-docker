@@ -74,5 +74,5 @@ sleep 15
 echo "[*] Запуск Docker Compose для GitLab CE..."
 docker compose up -d
 
-echo "[✔] Установка завершена. Проверьте доступность GitLab по адресу http://localhost:8080 или http://gitlab.panov.local:8080"
+echo "[✔] Установка завершена. Проверьте доступность GitLab по адресу http://gitlab.panov.local:8088"
 echo "[✔] Для входа в GitLab используйте: root/lazypeon"
