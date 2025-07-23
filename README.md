@@ -1,4 +1,4 @@
-## This repository will guide you to virtualize `Debian 12.iso` on MacOS M1 by UTM and set up a `GitLab CE` environment and services via Docker-compose.
+## This repository will guide you to virtualize `Debian 12.iso` on MacOS M1 by UTM and set up a `GitLab CE` environment and services via Docker-compose. Please proceed to READMME_FULL_GUIDE_RU.md for full step-bystep guide on Russian Lnaguage.
 
 ## What the script does:
 1. Checking for the presence of Docker, Docker-compose and other apts and installing them if necessary.
