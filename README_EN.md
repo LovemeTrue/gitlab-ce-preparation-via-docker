@@ -15,7 +15,6 @@ gitlab-ce-preparation-via-docker/
 ├── prometheus.yml
 ├── README_EN.md
 └── README.md
-
 ```
 ## To deploy pre requirements and GitLab CE via Docker-compose clone repo:
 ```

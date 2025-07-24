@@ -2,8 +2,6 @@
 
 ## Структура репозитория:
 ```
-## Repo structure:
-```
 gitlab-ce-preparation-via-docker/
 ├── .env                     
 |── docker-compose.yml
@@ -14,7 +12,7 @@ gitlab-ce-preparation-via-docker/
 ```
 
 ### 1. Установка UTM для MacOS(других ОС можно использовать VMWare или VirtualBox): https://mac.getutm.app
-### 2. В открытых источниках находим Debian.utm templates с предустановленными зависимостями для удобства администрирования(в идеале иметь кастомные образа для делплоя): 
+### 2. В открытых источниках находим Debian.utm templates с предустановленными зависимостями для удобства администрирования(в идеале иметь кастомные образа для делплоя: 
 ### https://archive.org/details/debian-12-rosetta-arm64-utm
 ```
 - QEMU Guest Agent
