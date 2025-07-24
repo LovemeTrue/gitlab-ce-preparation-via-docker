@@ -3,6 +3,7 @@
 ## Структура репозитория:
 ```
 gitlab-ce-preparation-via-docker/
+├── screenshots&info
 ├── .env                     
 |── docker-compose.yml
 ├── gitlab-ce-services-deploy.sh
